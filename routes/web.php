@@ -34,13 +34,13 @@ Route::prefix('admin')->group(function () {
     Route::post('/election/create',[App\Http\Controllers\adminController::class, 'electionStore'])->name('adminElectionStore');
     Route::get('/election/edit/{id}',[App\Http\Controllers\adminController::class, 'electionEdit'])->name('adminElectionEdit');
     Route::put('/election/edit/{id}',[App\Http\Controllers\adminController::class, 'electionUpdate'])->name('adminElectionUpdate');
-    Route::delete('/election',[App\Http\Controllers\adminController::class, 'electionDelete'])->name('adminElectionDelete');
+    Route::delete('/election/{id}', [App\Http\Controllers\adminController::class, 'electionDelete'])->name('adminElectionDelete');
     Route::get('/candidate',[App\Http\Controllers\adminController::class, 'candidate'])->name('adminCandidate');
     Route::get('/candidate/create',[App\Http\Controllers\adminController::class, 'candidateCreate'])->name('adminCandidateCreate');
     Route::post('/candidate/create',[App\Http\Controllers\adminController::class, 'candidateStore'])->name('adminCandidateStore');
     Route::get('/candidate/edit/{id}',[App\Http\Controllers\adminController::class, 'candidateEdit'])->name('adminCandidateEdit');
     Route::put('/candidate/edit/{id}',[App\Http\Controllers\adminController::class, 'candidateUpdate'])->name('adminCandidateUpdate');
-    Route::delete('/candidate',[App\Http\Controllers\adminController::class, 'candidateDelete'])->name('adminCandidateDelete');
+    Route::delete('/candidate/{id}',[App\Http\Controllers\adminController::class, 'candidateDelete'])->name('adminCandidateDelete');
 });
 
 Route::prefix('user')->group(function () {
