@@ -29,6 +29,18 @@ class HomeController extends Controller
     {
         return view('home');
     }
+    public function profil()
+    {
+        return view('profil');
+    }
+    public function profilUpdate(Request $request)
+    {
+        return view('home');
+    }
+    public function changePassword(Request $request)
+    {
+        return view('home');
+    }
     public function vote()
     {
         $data['election'] = Election::where('status','aktif')->first();

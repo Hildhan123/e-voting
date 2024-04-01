@@ -5,6 +5,7 @@
 <div class="container-fluid">
 <h1 class="h3 text-gray-800">Tabel Election</h1>
 <p>Ini merupakan tabel dari beberapa Election</p>
+<p style="color: red;">*Hanya ada 1 election yang aktif. Jika ada dua atau lebih election yang aktif, maka election dengan status aktif pertama yang akan dipilih</p>
 
 <!-- DataTales Example -->
 <div class="card shadow mb-4">
@@ -23,11 +24,11 @@
                 <thead>
                     <tr align="center">
                         <th>Nama</th>
-                        <th>Description</th>
-                        <th>Start_Date</th>
-                        <th>End_Date</th>
+                        <th>Deskripsi</th>
+                        <th>Tanggal Dimulai</th>
+                        <th>Tanggal Berakhir</th>
                         <th>Status</th>
-                        <th>Action</th>
+                        <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -35,8 +36,8 @@
                     <tr>
                         <td data-title="name">{{ $election->name }}</td>
                         <td data-title="description">{{ $election->description }}</td>
-                        <td data-title="start_date">{{ $election->start_date }}</td>
-                        <td data-title="end_date">{{ $election->end_date }}</td>
+                        <td data-title="start_date">{{ \Carbon\Carbon::parse($election->start_date)->format('Y-m-d') }}</td>
+                        <td data-title="end_date">{{ \Carbon\Carbon::parse($election->end_date)->format('Y-m-d') }}</td>
                         <td data-title="status">{{ $election->status }}</td>
                         <td data-title="Aksi" align="center">
                             <a href="{{ route('adminElectionEdit', ['id' => $election->id]) }}"><i class="fas fa-edit"></i></a> | 

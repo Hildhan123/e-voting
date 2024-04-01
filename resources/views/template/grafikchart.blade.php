@@ -1,46 +1,36 @@
- <!-- Link Grafik Chrat-->
- <script src="https://code.highcharts.com/highcharts.js"></script>
+<div id="chartElection"></div>
 
- <script>
-            Highcharts.chart('chartElection', {
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script>
+    Highcharts.chart('chartElection', {
         chart: {
-            type: 'column'
+            type: 'line'
         },
         title: {
             text: 'Total Election'
         },
         xAxis: {
             categories: [
-                'Laki-Laki',
-                'Perempuan',
-            ],
-            crosshair: true
+                @foreach($monthlyElections as $month => $total)
+                    '{{ date("F", mktime(0, 0, 0, $month, 1)) }}',
+                @endforeach
+            ]
         },
         yAxis: {
-            min: 0,
             title: {
-                text: 'Jumlah'
-            }
-        },
-        tooltip: {
-            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
-            footerFormat: '</table>',
-            shared: true,
-            useHTML: true
-        },
-        plotOptions: {
-            column: {
-                pointPadding: 0.2,
-                borderWidth: 0
+                text: 'Total Election'
             }
         },
         series: [{
-            name: 'Status',
+            name: 'Total Election',
+            data: [
+                @foreach($monthlyElections as $month => $total)
+                    {{ $total }},
+                @endforeach
+            ]
         }]
     });
-        </script>
+</script>
 
         <script>
             Highcharts.chart('chartCandidate', {
@@ -51,76 +41,46 @@
             text: 'Total Candidate'
         },
         xAxis: {
-            categories: [
-                'FTIK',
-                'FH',
-            ],
-            crosshair: true
+            categories: ['Male', 'Female']
         },
         yAxis: {
-            min: 0,
             title: {
-                text: 'Jumlah'
-            }
-        },
-        tooltip: {
-            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
-            footerFormat: '</table>',
-            shared: true,
-            useHTML: true
-        },
-        plotOptions: {
-            column: {
-                pointPadding: 0.2,
-                borderWidth: 0
+                text: 'Total Candidates'
             }
         },
         series: [{
-            name: 'Jenis Kelamin',
+            name: 'Candidates',
+            data: [{{ $maleCount }}, {{ $femaleCount }}]
         }]
-        });
+    });
         </script>
         <script>
             Highcharts.chart('chartVote', {
-        chart: {
-            type: 'column'
-        },
-        title: {
-            text: 'Total Vote'
-        },
-        xAxis: {
-            categories: [
-                '1 SKS',
-                '2 SKS',
-                '3 SKS',
-                '4 SKS',
-            ],
-            crosshair: true
-        },
-        yAxis: {
-            min: 0,
-            title: {
-                text: 'Jumlah'
-            }
-        },
-        tooltip: {
-            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
-            footerFormat: '</table>',
-            shared: true,
-            useHTML: true
-        },
-        plotOptions: {
-            column: {
-                pointPadding: 0.2,
-                borderWidth: 0
-            }
-        },
-        series: [{
-            name: 'Jenis Kelamin',
-        }]
-    });
+                chart: {
+                    type: 'line'
+                },
+                title: {
+                    text: 'Total Votes by Days'
+                },
+                xAxis: {
+                    categories: [
+                        @foreach($daysArray as $day)
+                            '{{ str_pad($day, 2, '0', STR_PAD_LEFT) }}',
+                        @endforeach
+                    ]
+                },
+                yAxis: {
+                    title: {
+                        text: 'Total Votes'
+                    }
+                },
+                series: [{
+                    name: 'Total Votes',
+                    data: [
+                        @foreach($daysArray as $day)
+                            {{ $monthlyVotes[$day] ?? 0 }}, // Total vote untuk setiap tanggal, jika tidak ada data, gunakan 0
+                        @endforeach
+                    ]
+                }]
+            });
         </script>
