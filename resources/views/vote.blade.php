@@ -20,7 +20,7 @@
                         {{-- Menampilkan opsi untuk kandidat laki-laki --}}
                         <optgroup label="Kandidat Laki-laki">
                             @foreach ($candidates->where('gender', 'laki_laki') as $candidate)
-                                <option value="{{ $candidate->id }}" {{ Auth::user()->gender != 'laki_laki' ? 'disabled' : '' }}>
+                                <option value="{{ $candidate->id }}" {{ (Auth::user()->gender != 'laki_laki' && Auth::user()->role == 'siswa') ? 'disabled' : '' }}>
                                     {{ $candidate->name }}
                                 </option>
                             @endforeach
@@ -29,7 +29,7 @@
                         {{-- Menampilkan opsi untuk kandidat perempuan --}}
                         <optgroup label="Kandidat Perempuan">
                             @foreach ($candidates->where('gender', 'perempuan') as $candidate)
-                                <option value="{{ $candidate->id }}" {{ Auth::user()->gender != 'perempuan' ? 'disabled' : '' }}>
+                                <option value="{{ $candidate->id }}" {{ (Auth::user()->gender != 'perempuan' && Auth::user()->role == 'siswa') ? 'disabled' : '' }}>
                                     {{ $candidate->name }}
                                 </option>
                             @endforeach

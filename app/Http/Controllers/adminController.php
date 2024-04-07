@@ -229,6 +229,52 @@ class adminController extends Controller
     
         return redirect()->route('adminCandidate')->with('success', 'Data Candidate berhasil dihapus');
     }
+    public function votes()
+    {
+        $data['election'] = Election::all();
+        $data['candidates'] = null;
+        
+        return view('admin.votes',$data);
+    }
+    public function votesHandler(Request $request)
+    {
+        $data['election'] = Election::all();
+        $request->validate([
+            'election_id' => 'required|exists:elections,id'
+        ]);
 
-    
+        $electionId = $request->input('election_id');
+
+        $data['candidates'] = Candidate::with('election')
+            ->where('election_id', $electionId)
+            ->orderByDesc('votes_count')
+            ->get();
+
+        // Hitung total suara untuk pemilihan ini
+        $data['totalVotes'] = $data['candidates']->sum('votes_count');
+
+        // Hitung persentase suara untuk setiap kandidat
+        foreach ($data['candidates'] as $candidate) {
+            $candidate->vote_percentage = $data['totalVotes'] > 0 ? number_format(($candidate->votes_count / $data['totalVotes']) * 100, 2) : 0;
+        }
+
+        return view('admin.votes',$data);
+    }
+    public function votesSinkron()
+    {
+        // Ambil semua kandidat
+        $candidates = Candidate::all();
+
+        // Loop melalui setiap kandidat
+        foreach ($candidates as $candidate) {
+            // Hitung total voting untuk kandidat ini
+            $totalVotes = Vote::where('candidate_id', $candidate->id)->count();
+
+            // Update kolom votes_count untuk kandidat ini
+            $candidate->update([
+                'votes_count' => $totalVotes
+            ]);
+        }
+        return "Data voting sudah sinkron";
+        }
 }

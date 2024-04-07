@@ -41,6 +41,9 @@ Route::prefix('admin')->group(function () {
     Route::get('/candidate/edit/{id}',[App\Http\Controllers\adminController::class, 'candidateEdit'])->name('adminCandidateEdit');
     Route::put('/candidate/edit/{id}',[App\Http\Controllers\adminController::class, 'candidateUpdate'])->name('adminCandidateUpdate');
     Route::delete('/candidate/{id}',[App\Http\Controllers\adminController::class, 'candidateDelete'])->name('adminCandidateDelete');
+    Route::get('/votes',[App\Http\Controllers\adminController::class, 'votes'])->name('adminVotes');
+    Route::post('/votes',[App\Http\Controllers\adminController::class, 'votesHandler'])->name('adminVotesHandler');
+    Route::get('/votes/sinkron',[App\Http\Controllers\adminController::class, 'votesSinkron'])->name('adminVotesSinkron');
 });
 
 Route::prefix('user')->group(function () {
@@ -50,4 +53,8 @@ Route::prefix('user')->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('/vote', [App\Http\Controllers\HomeController::class, 'vote'])->name('vote');
     Route::post('/vote', [App\Http\Controllers\HomeController::class, 'voteHandler'])->name('voteHandler');
+
+    Route::get('/profil', [App\Http\Controllers\HomeController::class, 'profil'])->name('profil');
+    Route::post('/profil', [App\Http\Controllers\HomeController::class, 'profilHandler'])->name('profilHandler');
+    Route::post('/change-password', [App\Http\Controllers\HomeController::class, 'changePassword'])->name('changePassword');
 });
