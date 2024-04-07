@@ -63,6 +63,6 @@ class HomeController extends Controller
             'candidate_id' => $request->vote,
         ]);
     
-        return $createVote;
+        return redirect()->route('vote')->with('success', 'Suara Anda telah berhasil disimpan!');
     }
 }

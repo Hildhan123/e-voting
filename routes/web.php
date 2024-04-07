@@ -50,4 +50,17 @@ Route::prefix('user')->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('/vote', [App\Http\Controllers\HomeController::class, 'vote'])->name('vote');
     Route::post('/vote', [App\Http\Controllers\HomeController::class, 'voteHandler'])->name('voteHandler');
+    Route::get('/profile', function () {
+        return view('profile');
+    })->name('profile')->middleware('auth');
+
+    Route::get('/profile/edit', function () {
+        return view('edit-profile');
+    })->name('editProfile')->middleware('auth');
+
+    Route::put('/profile/update', [App\Http\Controllers\UserController::class, 'updateProfile'])->name('updateProfile');
+    
+    Route::get('/profile/change-password', function () {
+        return view('change-password');
+    })->name('changePassword')->middleware('auth');     
 });
