@@ -30,6 +30,7 @@
             </div>
             @endforeach
             </div>
+
             @else
                 <p style="text-align: center;">Terimakasih atas pilihan anda &nbsp; <img src="{{{ asset('template/img/ilustration-thankyou.png') }}}" alt="" style="width: 15vw; max-width: 50px;"></p>
                 

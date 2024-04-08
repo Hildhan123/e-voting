@@ -75,11 +75,11 @@
                                                         {{ __('Remember Me') }}
                                                     </label>
                                             </div>
-                                            <div class="ml-auto">
+                                            {{-- <div class="ml-auto">
                                                 @if (Route::has('password.request'))
                                                     <a class="small" href="{{ route('password.request') }}">{{ __('Forgot Your Password?') }}</a>
                                                 @endif
-                                            </div>
+                                            </div> --}}
                                         </div>
                                         <div class="row mb-0">
                                         <div class="col-md-8 offset-md-2">

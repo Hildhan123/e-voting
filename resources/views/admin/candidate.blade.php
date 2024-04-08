@@ -23,24 +23,24 @@
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                     <tr align="center">
-                        <th>Election</th>
-                        <th>Name</th>
+                        <th>Nama Election</th>
+                        <th>Name Candidate</th>
                         <th>Gender</th>
-                        <th>Photo</th>
+                        <th>Foto</th>
                         <th>Visi Misi</th>
                         <th>Jumlah Voting</th>
-                        <th>Action</th>
+                        <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                 @foreach($candidates as $candidate)
                     <tr>
-                        <td data-title="Election" style="vertical-align: middle;">{{ $candidate->election_id }}</td>
+                        <td data-title="Election" style="vertical-align: middle;">{{ $candidate->nama_election }}</td>
                         <td data-title="Name" style="vertical-align: middle;">{{ $candidate->name }}</td>
                         <td data-title="Gender" style="vertical-align: middle;">{{ $candidate->gender }}</td>
                         <td data-title="Photo" style="vertical-align: middle;"><img src="{{ asset($candidate->photo) }}" alt="{{ $candidate->name }}" width="125"></td>
                         <td data-title="Visi_Misi" style="vertical-align: middle;">{{ $candidate->visi_misi }}</td>
-                        <td data-title="Jumlah_VOting" style="vertical-align: middle;"></td>
+                        <td data-title="Jumlah_VOting" style="vertical-align: middle;">{{$candidate->votes_count}}</td>
                         <td data-title="Aksi" style="vertical-align: middle;" align="center">
                             <a href="{{ route('adminCandidateEdit', ['id' => $candidate->id]) }}"><i class="fas fa-edit"></i></a> | 
                             <a href="{{ route('adminCandidateDelete', ['id' => $candidate->id]) }}" class="modul-hapus"><i class="fas fa-trash" style="color: red"></i></a>

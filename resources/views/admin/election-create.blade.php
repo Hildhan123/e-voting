@@ -14,34 +14,49 @@
                     <h6 class="m-0 font-weight-bold text-primary">Tambah Election</h6>
                 </div>
                 <div class="card-body">
-                    <form action="" method="POST" action="{{Route('adminElectionStore')}}">
-                    @csrf
-                    <div class="form-group">
-                        <label>Nama</label>
-                        <input type="text" name="name" value="{{old('name')}}" placeholder="name" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label>Description</label>
-                        <textarea type="text" name="description" value="{{old('description')}}" placeholder="description" class="form-control"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>Start Date</label>
-                        <input type="date" name="start_date" value="{{old('start_date')}}" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label>End Date</label>
-                        <input type="date" name="end_date" value="{{old('end_date')}}" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label>Status</label>
-                        <select name="status" class="form-select">
-                        <option value="aktif" selected>Aktif</option>
-                        <option value="selesai">Selesai</option>
-                        <option value="ditutup">Ditutup</option>
-                    </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-sm"><i class="fas fa-save" style="margin-right: 5px;"></i>Tambah</button>
-                    </form>
+                    <form method="POST" action="{{ route('adminElectionStore') }}">
+                        @csrf
+                        <div class="form-group">
+                            <label>Nama</label>
+                            <input type="text" name="name" value="{{ old('name') }}" placeholder="Nama Election (Pemilihan)" class="form-control @error('name') is-invalid @enderror">
+                            @error('name')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea type="text" name="description" placeholder="Deskripsi" class="form-control @error('description') is-invalid @enderror">{{ old('description') }}</textarea>
+                            @error('description')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label>Start Date</label>
+                            <input type="date" name="start_date" value="{{ old('start_date') }}" class="form-control @error('start_date') is-invalid @enderror">
+                            @error('start_date')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label>End Date</label>
+                            <input type="date" name="end_date" value="{{ old('end_date') }}" class="form-control @error('end_date') is-invalid @enderror">
+                            @error('end_date')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select name="status" class="form-select @error('status') is-invalid @enderror">
+                                <option value="aktif" selected>Aktif</option>
+                                <option value="selesai">Selesai</option>
+                                <option value="ditutup">Ditutup</option>
+                            </select>
+                            @error('status')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-sm"><i class="fas fa-save" style="margin-right: 5px;"></i>Tambah</button>
+                    </form>                    
                 </div>
             </div>
         </div>

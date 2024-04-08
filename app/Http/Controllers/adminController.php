@@ -7,6 +7,8 @@ use App\Models\Models\Election;
 use App\Models\Models\Vote;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Carbon\Carbon;
 use Auth;
 use Image;
 
@@ -39,14 +41,50 @@ class adminController extends Controller
      */
     public function index()
     {
-        return view('admin.dashboard');
+        $data['elections'] = Election::all();
+        $data['candidates'] = Candidate::all();
+        $data['votes'] = Vote::all();
+
+        $data['monthlyElections'] = $this->calculateMonthlyElections();
+        $data['maleCount'] = $data['candidates']->where('gender', 'laki_laki')->count();
+        $data['femaleCount'] = $data['candidates']->where('gender', 'perempuan')->count();
+        $data['monthlyVotes'] = $this->calculateMonthlyVotes();
+
+        // Menginisialisasi array bulan dengan jumlah hari sesuai bulan saat ini
+        $data['daysArray'] = range(1, Carbon::now()->daysInMonth);
+
+        return view('admin.dashboard', $data);
     }
+    private function calculateMonthlyElections()
+    {
+        $monthlyElections = Election::selectRaw('MONTH(start_date) as month, COUNT(*) as total')
+            ->groupBy('month')
+            ->get();
 
-    // public function election()
-    // {
-    //     return view('admin.election');
-    // }
+        $totals = [];
 
+        // Inisialisasi nilai total pemilihan untuk setiap bulan
+        for ($i = 1; $i <= 12; $i++) {
+            $totals[$i] = 0;
+        }
+
+        // Mengisi nilai total pemilihan untuk setiap bulan dari hasil query
+        foreach ($monthlyElections as $election) {
+            $month = $election->month;
+            $totals[$month] = $election->total;
+        }
+
+        return $totals;
+    }
+    private function calculateMonthlyVotes()
+    {
+        return Vote::selectRaw('DAY(created_at) as day, COUNT(*) as total')
+            ->whereMonth('created_at', Carbon::now()->month)
+            ->groupBy('day')
+            ->get()
+            ->pluck('total', 'day')
+            ->toArray();
+    }
     public function election()
     {
         $data['elections'] = Election::all();
@@ -66,11 +104,8 @@ class adminController extends Controller
             'status' => 'required|in:aktif,selesai,ditutup',
         ]);
 
-        // $validateData['start_date'] = $validateData['start_date']->format('Y-m-d');
-        // $validateData['end_date'] = $validateData['end_date']->format('Y-m-d');
-
         $election = Election::create($validateData);
-        return redirect()->route('adminElection');
+        return redirect()->route('adminElection')->with('success', 'Data Election berhasil dibuat');
     }
     public function electionEdit($id)
     {
@@ -79,6 +114,14 @@ class adminController extends Controller
     }
     public function electionUpdate(Request $request, $id)
     {
+        $validateData = $request->validate([
+            'name' => 'required|string',
+            'description' => 'required|string',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date',
+            'status' => 'required|in:aktif,selesai,ditutup',
+        ]);
+        
         $election = Election::findOrFail($id);
         $election->name = $request->name;
         $election->description = $request->description;
@@ -87,7 +130,6 @@ class adminController extends Controller
         $election->status = $request->status;
         $election->save();
 
-        // Setelah berhasil menyimpan perubahan, arahkan pengguna kembali ke halaman daftar Election
         return redirect()->route('adminElection')->with('success', 'Data Election berhasil diperbarui');
     }
 
@@ -102,12 +144,8 @@ class adminController extends Controller
 
     public function candidate()
     {
-        $data['candidates'] = Candidate::select('candidates.*')
-            ->selectSub(function ($query) {
-                $query->selectRaw('COUNT(*)')
-                    ->from('votes')
-                    ->whereColumn('votes.candidate_id', 'candidates.id');
-            }, 'vote_count')
+        $data['candidates'] = Candidate::select('candidates.*', 'elections.name as nama_election')
+            ->leftJoin('elections', 'candidates.election_id', '=', 'elections.id')
             ->get();
 
         return view('admin.candidate', $data);
@@ -128,27 +166,28 @@ class adminController extends Controller
         ]);
         
         $extFile = $request->photo->getClientOriginalExtension();
-        $namaFile = time()."{$validateData['name']}".".".$extFile;
+        $namaFile = time() . "_" . $validateData['name'] . "." . $extFile;
         $resizedImage = Image::make($request->photo)->resize(600, 800);
         $resizedImage->save(public_path('candidate/' . $namaFile));
         $path = "/candidate/".$namaFile;
         $validateData['photo'] = $path;
 
         $candidate = Candidate::create($validateData);
-        return redirect()->route('adminCandidate');
-        // return $candidate;
+        return redirect()->route('adminCandidate')->with('success', 'Data Candidate berhasil dibuat');
     }
 
     public function candidateEdit($id)
     {
         $candidate = Candidate::findOrFail($id);
-        return view('admin.candidate-edit', compact('candidate'));
+        $election = Election::where('status','aktif')->get();
+        return view('admin.candidate-edit', compact('candidate','election'));
     }
     
 
     public function candidateUpdate(Request $request, $id)
     {
         $validateData = $request->validate([
+            'election_id' => 'required|integer',
             'name' => 'required|string',
             'gender' => 'required|in:laki_laki,perempuan',
             'photo' => 'nullable|file|mimes:png,jpg,jpeg|max:2000',
@@ -159,8 +198,13 @@ class adminController extends Controller
         $candidate->name = $validateData['name'];
         $candidate->gender = $validateData['gender'];
         $candidate->visi_misi = $validateData['visi_misi'];
+        $candidate->election_id = $validateData['election_id'];
     
         if ($request->hasFile('photo')) {
+            if ($candidate->photo) {
+                File::delete(public_path($candidate->photo));
+            }
+
             // Jika ada file foto yang diunggah, simpan dan update path fotonya
             $extFile = $request->photo->getClientOriginalExtension();
             $namaFile = time() . "_" . $validateData['name'] . "." . $extFile;
@@ -178,10 +222,59 @@ class adminController extends Controller
     public function candidateDelete($id)
     {
         $candidate = Candidate::findOrFail($id);
+        if ($candidate->photo) {
+            File::delete(public_path($candidate->photo));
+        }
         $candidate->delete();
     
         return redirect()->route('adminCandidate')->with('success', 'Data Candidate berhasil dihapus');
     }
+    public function votes()
+    {
+        $data['election'] = Election::all();
+        $data['candidates'] = null;
+        
+        return view('admin.votes',$data);
+    }
+    public function votesHandler(Request $request)
+    {
+        $data['election'] = Election::all();
+        $request->validate([
+            'election_id' => 'required|exists:elections,id'
+        ]);
 
-    
+        $electionId = $request->input('election_id');
+
+        $data['candidates'] = Candidate::with('election')
+            ->where('election_id', $electionId)
+            ->orderByDesc('votes_count')
+            ->get();
+
+        // Hitung total suara untuk pemilihan ini
+        $data['totalVotes'] = $data['candidates']->sum('votes_count');
+
+        // Hitung persentase suara untuk setiap kandidat
+        foreach ($data['candidates'] as $candidate) {
+            $candidate->vote_percentage = $data['totalVotes'] > 0 ? number_format(($candidate->votes_count / $data['totalVotes']) * 100, 2) : 0;
+        }
+
+        return view('admin.votes',$data);
+    }
+    public function votesSinkron()
+    {
+        // Ambil semua kandidat
+        $candidates = Candidate::all();
+
+        // Loop melalui setiap kandidat
+        foreach ($candidates as $candidate) {
+            // Hitung total voting untuk kandidat ini
+            $totalVotes = Vote::where('candidate_id', $candidate->id)->count();
+
+            // Update kolom votes_count untuk kandidat ini
+            $candidate->update([
+                'votes_count' => $totalVotes
+            ]);
+        }
+        return "Data voting sudah sinkron";
+        }
 }
