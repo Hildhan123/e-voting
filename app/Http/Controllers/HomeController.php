@@ -103,7 +103,6 @@ class HomeController extends Controller
             if ($selectedCandidate->gender != Auth::user()->gender && Auth::user()->role == 'siswa') {
                 return 'Anda hanya bisa memilih kandidat dengan gender yang sesuai dengan Anda.';
             }
-    
             $election = Election::where('status','aktif')->first();
     
             $createVote =  Vote::create([
@@ -114,7 +113,7 @@ class HomeController extends Controller
             $selectedCandidate->votes_count += 1;
             $selectedCandidate->save();
         
-            return $createVote;
+            return redirect()->route('vote')->with('success', 'Suara Anda telah berhasil disimpan!');
         } else {
             abort(404);
         }
