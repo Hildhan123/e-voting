@@ -22,7 +22,7 @@
                 <div class="card">
                     <a href="#" class="candidate-link" data-toggle="modal" data-target="#candidateModal{{$candidate->id}}">
                         <img src="{{ asset($candidate->photo) }}" class="card-img-top" alt="{{ $candidate->name }}">
-                        <div class="card-body" style="{{ $candidate->gender == 'perempuan' ? 'background-color: pink;' : 'background-color: gold;' }} color: black">
+                        <div class="card-body" style="{{ $candidate->gender == 'perempuan' ? 'background-color: pink; color: black' : 'background-color: blue; color: white' }}">
                             <h5 class="card-title text-center">{{ $candidate->name }}</h5>
                         </div>
                     </a>
@@ -55,7 +55,7 @@
                                     </div>
                                 </div>
                             @endif
-                            <div class="card-body" style="{{ $vote && $vote->candidate_id == $candidate->id ? 'background-color: gold; color: black;' : (($candidate->gender == 'perempuan' && Auth::user()->gender == 'perempuan') ? 'background-color: pink; color: black;' : (($candidate->gender == 'laki-laki' && Auth::user()->gender == 'laki-laki') ? 'background-color: gold; color: black;' : 'background-color: grey; color: #e2e8f0;')) }}">
+                            <div class="card-body" style="{{ $vote && $vote->candidate_id == $candidate->id ? 'background-color: blue; color: white;' : (($candidate->gender == 'perempuan' && Auth::user()->gender == 'perempuan') ? 'background-color: pink; color: black;' : (($candidate->gender == 'laki-laki' && Auth::user()->gender == 'laki-laki') ? 'background-color: blue; color: white;' : 'background-color: grey; color: #e2e8f0;')) }}">
                                 <h5 class="card-title text-center">{{ $candidate->name }}</h5>
                             </div>
                         </div>
