@@ -88,6 +88,13 @@
                     <span>Candidate</span></a>
             </li>
 
+            <!-- Nav Item - Tables -->
+            <li class="nav-item @yield('votes')">
+                <a class="nav-link" href="{{route('adminVotes')}}">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Progress Votes</span></a>
+            </li>
+
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 
@@ -133,8 +140,8 @@
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="{{ route('logout') }}" data-toggle="modal" data-target="#logoutModal">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                <a class="dropdown-item" href="{{ route('logout') }}" data-toggle="modal" data-target="#logoutModal" style="color: red;">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2" style="color: red;"></i>
                                     {{ __('Logout') }}
                                 </a>
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
