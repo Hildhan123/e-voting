@@ -55,6 +55,8 @@ Route::prefix('user')->group(function () {
     Route::post('/vote', [App\Http\Controllers\HomeController::class, 'voteHandler'])->name('voteHandler');
 
     Route::get('/profil', [App\Http\Controllers\HomeController::class, 'profil'])->name('profil');
-    Route::post('/profil', [App\Http\Controllers\HomeController::class, 'profilHandler'])->name('profilHandler');
-    Route::post('/change-password', [App\Http\Controllers\HomeController::class, 'changePassword'])->name('changePassword');
+    Route::get('/profil/edit', [App\Http\Controllers\HomeController::class, 'profilEdit'])->name('profilEdit');
+    Route::put('/profil', [App\Http\Controllers\HomeController::class, 'profilHandler'])->name('profilHandler');
+    Route::get('/change-password', [App\Http\Controllers\HomeController::class, 'changePassword'])->name('changePassword');
+    Route::put('/change-password', [App\Http\Controllers\HomeController::class, 'changePasswordHandler'])->name('changePasswordHandler');
 });

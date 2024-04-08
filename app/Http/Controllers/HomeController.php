@@ -35,7 +35,11 @@ class HomeController extends Controller
     }
     public function profil()
     {
-        return view('profil');
+        return view('profile');
+    }
+    public function profilEdit()
+    {
+        return view('edit-profile');
     }
     public function profilHandler(Request $request)
     {
@@ -51,14 +55,19 @@ class HomeController extends Controller
         $user->name = $validateData['name'];
         $user->email = $validateData['email'];
         $user->save();
-        return $user;
+
+        return redirect()->route('home')->with('success', 'Profil anda berhasil diperbarui!');
     }
-    public function changePassword(Request $request)
+    public function changePassword()
+    {
+        return view('change-password');
+    }
+    public function changePasswordHandler(Request $request)
     {
         // Validasi input
         $request->validate([
             'current_password' => 'required',
-            'password' => 'required|string|min:8|confirmed',
+            'new_password' => 'required|string|min:8|confirmed',
         ]);
 
         // Mendapatkan user yang sedang login
@@ -72,10 +81,10 @@ class HomeController extends Controller
         }
 
         // Memperbarui password user
-        $user->password = Hash::make($request->password);
+        $user->password = Hash::make($request->new_password);
         $user->save();
 
-        return "Password berhasil diubah";
+        return redirect()->route('home')->with('success', 'Password berhasil diperbarui!');
     }
     public function vote()
     {

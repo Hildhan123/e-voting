@@ -95,7 +95,7 @@
                     @csrf
                     <input type="hidden" name="vote" value="{{ $candidate->id }}">
                     <small>Apakah anda yakin dengan pilihan anda?</small>
-                    @if (Auth::user()->gender == $candidate->gender) 
+                    @if (Auth::user()->gender == $candidate->gender || Auth::user()->role == 'guru') 
                         <button type="submit" class="btn btn-primary">Yakin</button>
                     @else
                         <small style="color: red;">Anda tidak bisa memilih kandidat ini.</small>
