@@ -1,5 +1,6 @@
 @extends('layouts.app-user')
 
+@section('title', 'User - Vote')
 @section('vote', 'active')
 @section('content')
 

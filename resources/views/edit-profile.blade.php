@@ -1,5 +1,7 @@
 @extends('layouts.app-user')
 
+@section('title', 'User - Edit Profile')
+
 @section('content')
     <div class="container">
         <a href="{{ route('profil') }}">
