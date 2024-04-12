@@ -32,6 +32,11 @@ class adminController extends Controller
         if (Auth::guard('admin')->attempt($credentials)) {
             return redirect()->route('adminDashboard');
         }
+        return redirect()->route('adminLogin')->withErrors(['login' => 'Username or password is incorrect']);
+    }
+    public function logout(Request $request)
+    {
+        Auth::guard('admin')->logout();
         return redirect()->route('adminLogin');
     }
     /**

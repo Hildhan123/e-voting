@@ -127,4 +127,9 @@ class HomeController extends Controller
             abort(404);
         }
     }
+    public function logout()
+    {
+        Auth::guard('web')->logout();
+        return redirect()->route('login');
+    }
 }

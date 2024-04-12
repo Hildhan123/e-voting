@@ -151,11 +151,11 @@
                                     Ubah Password
                                 </a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="{{ route('logout') }}" data-toggle="modal" data-target="#logoutModal" style="color: red;">
+                                <a class="dropdown-item" href="{{ route('userLogout') }}" data-toggle="modal" data-target="#logoutModal" style="color: red;">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2" style="color: red;"></i>
                                     {{ __('Logout') }}
                                 </a>
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                <form id="logout-form" action="{{ route('userLogout') }}" method="POST" class="d-none">
                                     @csrf
                                 </form>
                             </div>
@@ -226,7 +226,7 @@
                 <div class="modal-body">Jika yakin klik tombol "Logout", Jika tidak klik tombol "Cancel"</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-danger" href="{{ route('logout') }}" onclick="event.preventDefault();
+                    <a class="btn btn-danger" href="{{ route('userLogout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>

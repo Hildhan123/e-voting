@@ -27,6 +27,7 @@ Route::prefix('admin')->group(function () {
     });
     Route::get('/login',[App\Http\Controllers\adminController::class, 'login'])->name('adminLogin');
     Route::post('/login',[App\Http\Controllers\adminController::class, 'loginHandler'])->name('adminLoginHandler');
+    Route::post('/logout', [App\Http\Controllers\adminController::class, 'logout'])->name('adminLogout');
 
     Route::get('/dashboard',[App\Http\Controllers\adminController::class, 'index'])->name('adminDashboard');
     Route::get('/election',[App\Http\Controllers\adminController::class, 'election'])->name('adminElection');
@@ -53,10 +54,11 @@ Route::prefix('user')->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('/vote', [App\Http\Controllers\HomeController::class, 'vote'])->name('vote');
     Route::post('/vote', [App\Http\Controllers\HomeController::class, 'voteHandler'])->name('voteHandler');
-
+    
     Route::get('/profil', [App\Http\Controllers\HomeController::class, 'profil'])->name('profil');
     Route::get('/profil/edit', [App\Http\Controllers\HomeController::class, 'profilEdit'])->name('profilEdit');
     Route::put('/profil', [App\Http\Controllers\HomeController::class, 'profilHandler'])->name('profilHandler');
     Route::get('/change-password', [App\Http\Controllers\HomeController::class, 'changePassword'])->name('changePassword');
     Route::put('/change-password', [App\Http\Controllers\HomeController::class, 'changePasswordHandler'])->name('changePasswordHandler');
+    Route::post('/logout', [App\Http\Controllers\HomeController::class, 'logout'])->name('userLogout');
 });
