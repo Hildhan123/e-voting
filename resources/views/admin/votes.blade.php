@@ -1,6 +1,7 @@
 @extends('layouts.app')
-@section('votes', 'active')
 
+@section('title', 'Admin - Progress Vote')
+@section('votes', 'active')
 @section('content')
 <div class="container-fluid">
     <div class="card shadow mb-4">
