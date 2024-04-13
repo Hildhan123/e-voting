@@ -1,6 +1,7 @@
 @extends('layouts.app')
-@section('election', 'active')
 
+@section('title', 'Admin - Daftar Election')
+@section('election', 'active')
 @section('content')
 <div class="container-fluid">
 <h1 class="h3 text-gray-800">Tabel Election</h1>

@@ -13,7 +13,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>@yield('title')</title>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -88,6 +88,13 @@
                     <span>Candidate</span></a>
             </li>
 
+            <!-- Nav Item - Tables -->
+            <li class="nav-item @yield('votes')">
+                <a class="nav-link" href="{{route('adminVotes')}}">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Progress Votes</span></a>
+            </li>
+
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 
@@ -133,11 +140,11 @@
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="{{ route('logout') }}" data-toggle="modal" data-target="#logoutModal">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                <a class="dropdown-item" href="{{ route('adminLogout') }}" data-toggle="modal" data-target="#logoutModal" style="color: red;">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2" style="color: red;"></i>
                                     {{ __('Logout') }}
                                 </a>
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                <form id="logout-form" action="{{ route('adminLogout') }}" method="POST" class="d-none">
                                     @csrf
                                 </form>
                             </div>
@@ -210,7 +217,7 @@
                 <div class="modal-body">Jika yakin klik tombol "Logout", Jika tidak klik tombol "Cancel"</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-danger" href="{{ route('logout') }}" onclick="event.preventDefault();
+                    <a class="btn btn-danger" href="{{ route('adminLogout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>

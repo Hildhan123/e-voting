@@ -13,10 +13,14 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>@yield('title')</title>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+
+    <script src="{{ asset('js/jquery.min.js') }}"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -137,11 +141,21 @@
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
 
-                                <a class="dropdown-item" href="{{ route('logout') }}" data-toggle="modal" data-target="#logoutModal">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                <a class="dropdown-item" href="{{ route('profil') }}">
+                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Profile
+                                </a>
+
+                                <a class="dropdown-item" href="{{ route('changePassword') }}">
+                                    <i class="fas fa-key fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Ubah Password
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{{ route('userLogout') }}" data-toggle="modal" data-target="#logoutModal" style="color: red;">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2" style="color: red;"></i>
                                     {{ __('Logout') }}
                                 </a>
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                <form id="logout-form" action="{{ route('userLogout') }}" method="POST" class="d-none">
                                     @csrf
                                 </form>
                             </div>
@@ -150,7 +164,26 @@
                     </ul>
                 </nav>
                 <!-- End of Topbar -->
+                @if (session('success'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ session('success') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
 
+                @if (session('error'))
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {{ session('error') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+
+                @if (session('warning'))
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        {{ session('warning') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
                 <!-- Begin Page Content -->
               @yield('content')
                 <!-- /.container-fluid -->
@@ -185,15 +218,15 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Apakah anda yakin ingin keluar?</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-body">Jika yakin klik tombol "Logout", Jika tidak klik tombol "Cancel"</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="{{ route('logout') }}" onclick="event.preventDefault();
+                    <a class="btn btn-danger" href="{{ route('userLogout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
@@ -219,6 +252,36 @@
 
     <!-- Page level custom scripts -->
     <script src="{{asset('template/js/demo/datatables-demo.js')}}"></script>
+
+    <!-- CSS untuk menampilkan teks berdasarkan tampilan -->
+    <style>
+    /* CSS untuk tampilan desktop */
+    @media (min-width: 768px) {
+        p[style*="font-size: 30px;"] {
+            margin-top: -150px;
+            display: block !important;
+        }
+        p[style*="font-size: 3vw;"] {
+            margin-top: 0px;
+            display: none !important;
+        }
+    }
+
+    /* CSS untuk tampilan mobile */
+    @media (max-width: 767px) {
+        p[style*="font-size: 30px;"] {
+            margin-top: 0px;
+            display: none !important;
+        }
+        p[style*="font-size: 3vw;"] {
+            display: block !important;
+        }
+        .btn-responsive {
+            font-size: 3vw; /* Ubah ukuran font sesuai kebutuhan */
+            padding: 0.5em 1em; /* Atur padding tombol sesuai kebutuhan */
+        }
+    }
+</style>
 
 </body>
 

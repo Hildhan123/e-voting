@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Login</title>
+    <title>User - Register</title>
 
     <!-- Custom fonts for this template-->
     <link href="{{asset('template/vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
@@ -124,6 +124,11 @@
                                                 </button>
                                             </div>
                                         </div>
+
+                                    <hr>
+                                    <div class="text-center">
+                                    <small>Sudah punya akun?</small> <a class="small" href="{{ route('login') }}">Login Sekarang</a>
+                                    </div>
                                     </div>
                                     </form>
                                 </div>

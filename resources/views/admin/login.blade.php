@@ -10,7 +10,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Login</title>
+    <title>Admin - Login</title>
 
     <!-- Custom fonts for this template-->
     <link href="{{asset('template/vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
@@ -51,23 +51,16 @@
                                         </div>
                                         <div class="form-group">
                                         <input type="text" class="form-control" name="name" value="{{ old('name') }}" required autocomplete="name">
-                                            @error('email')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
                                         </div>
                                         <div class ="row mb-3">
                                             <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
                                         </div>
                                         <div class="form-group">
                                         <input type="password" class="form-control" name="password" value="{{ old('password')}}" required autocomplete="password">
-                                            @error('password')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </div>
+                                    </div>
+                                    @error('login')
+                                        <div class="alert alert-danger">{{ $message }}</div>
+                                    @enderror
                                         <div class="form-group d-flex align-items-center">
                                             <div class="custom-control custom-checkbox small">
                                                 <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
