@@ -1,5 +1,7 @@
 @extends('layouts.app-user')
 
+@section('title', ' User - Ubah Password')
+
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
