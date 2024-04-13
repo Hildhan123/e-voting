@@ -1,6 +1,7 @@
 @extends('layouts.app')
-@section('election', 'active')
 
+@section('title', 'Admin - Tambah Election')
+@section('election', 'active')
 @section('content')
 <div class="container-fluid">
     <!-- Approach -->
