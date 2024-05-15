@@ -54,6 +54,7 @@ Route::prefix('user')->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('/vote', [App\Http\Controllers\HomeController::class, 'vote'])->name('vote');
     Route::post('/vote', [App\Http\Controllers\HomeController::class, 'voteHandler'])->name('voteHandler');
+    Route::put('/vote', [App\Http\Controllers\HomeController::class, 'voteGuru'])->name('voteGuru');
     
     Route::get('/profil', [App\Http\Controllers\HomeController::class, 'profil'])->name('profil');
     Route::get('/profil/edit', [App\Http\Controllers\HomeController::class, 'profilEdit'])->name('profilEdit');

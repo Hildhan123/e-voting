@@ -19,9 +19,10 @@
                         @csrf
                         <div class="form-group">
                             <label>Nama Election</label>
-                            <select name="election_id" class="form-select @error('election_id') is-invalid @enderror">
+                            <select id="election_id" name="election_id" class="form-select @error('election_id') is-invalid @enderror">
+                                <option value=""></option>
                                 @foreach ($election as $list)
-                                    <option value="{{ $list->id }}" {{ old('election_id') == $list->id ? 'selected' : '' }}>{{ $list->name }}</option>
+                                    <option value="{{ $list->id }}" data-gender="{{ $list->gender }}" {{ old('election_id') == $list->id ? 'selected' : '' }}>{{ $list->name }}</option>
                                 @endforeach
                             </select>
                             @error('election_id')
@@ -37,10 +38,11 @@
                         </div>
                         <div class="form-group">
                             <label>Gender</label>
-                            <select name="gender" class="form-control @error('gender') is-invalid @enderror">
+                            <select id="gender" class="form-control @error('gender') is-invalid @enderror">
                                 <option value="laki_laki" {{ old('gender') == 'laki_laki' ? 'selected' : '' }}>Laki-laki</option>
                                 <option value="perempuan" {{ old('gender') == 'perempuan' ? 'selected' : '' }}>Perempuan</option>
                             </select>
+                            <input type="hidden" id="hidden_gender" name="gender" value="{{ old('gender') }}">
                             @error('gender')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -56,7 +58,7 @@
                         </div>
                         <div class="form-group">
                             <label>Visi Misi</label>
-                            <textarea type="text" name="visi_misi" class="form-control @error('visi_misi') is-invalid @enderror" placeholder="visi-misi">{{ old('visi_misi') }}</textarea>
+                            <textarea type="text" name="visi_misi" class="form-control @error('visi_misi') is-invalid @enderror" placeholder="visi-misi" rows="5" cols="50">{{ old('visi_misi') }}</textarea>
                             @error('visi_misi')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -68,4 +70,31 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const electionSelect = document.getElementById('election_id');
+        const genderSelect = document.getElementById('gender');
+        const hiddenGenderInput = document.getElementById('hidden_gender');
+
+        function setGender() {
+            const selectedOption = electionSelect.options[electionSelect.selectedIndex];
+            const gender = selectedOption.getAttribute('data-gender');
+
+            if (gender) {
+                genderSelect.value = gender;
+                hiddenGenderInput.value = gender;
+                genderSelect.disabled = true;
+            } else {
+                genderSelect.disabled = false;
+                genderSelect.value = '';
+                hiddenGenderInput.value = '';
+            }
+        }
+
+        setGender();
+
+        electionSelect.addEventListener('change', setGender);
+    });
+</script>
 @endsection

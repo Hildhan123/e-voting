@@ -5,6 +5,24 @@
 @section('content')
 
 <div class="container-fluid">
+    @if(Auth::user()->role == 'guru')
+            <div class="card">
+                <h1 class="h3 mb-2 text-gray-800" style="margin-bottom: 50px; font-size: 100%; font-weight: bold;">Pilih Election</h1>
+                    <form method="POST" action="{{route('voteGuru')}}">
+                        @csrf
+                        @method('PUT')
+                        <div class="form-group">
+                            <select name="election_id" class="form-select">
+                                @foreach ($elections as $list)
+                                <option value="{{ $list->id }}" {{ old('election_id') == $list->id ? 'selected' : '' }}>{{ $list->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>       
+                        <button type="submit" class="btn btn-primary mt-3 float-right" style="width: 100%; max-width: 200px;"><i class="fas fa-paper-plane"> &nbsp</i>Submit</button>
+                    </form>
+            </div>
+    @endif
+    @if(Auth::user()->role == 'siswa' || $guru == 'ok')
     <div class="card shadow mb-4">
         <div class="card-header py-3">
         <h3 style="text-align: center;" ><strong>{{ $election->name }}</strong></h3>
@@ -66,8 +84,10 @@
             @endif
         </div>
     </div>
+    @endif
 </div>
 
+@if($candidates)
 @foreach ($candidates as $candidate)
 <!-- Modal -->
 <div class="modal fade" id="candidateModal{{$candidate->id}}" tabindex="-1" role="dialog" aria-labelledby="candidateModalLabel{{$candidate->id}}" aria-hidden="true">
@@ -87,7 +107,7 @@
                         <h4 class="modal-title text-center" id="candidateModalLabel{{$candidate->id}}" style="color: black;"><strong>{{ $candidate->name }}</strong></h4>
                         <hr class="divider" style="border-top: 1px solid black;">
                         <h5 style="text-align: center; color: black;"><strong>Visi & Misi:</strong></h5>
-                        <small style="display: block; text-align: center; color: black;">{{ $candidate->visi_misi }}</small>
+                        <small style="display: block; text-align: center; color: black; overflow: hidden; white-space: pre-wrap;">{{ $candidate->visi_misi }}</small>
                     </div>
                 </div>
             </div>
@@ -95,6 +115,7 @@
                 <form action="{{ route('voteHandler') }}" method="POST">
                     @csrf
                     <input type="hidden" name="vote" value="{{ $candidate->id }}">
+                    <input type="hidden" name="election_id" value="{{ $election->id }}">
                     <small>Apakah anda yakin dengan pilihan anda?</small>
                     @if (Auth::user()->gender == $candidate->gender || Auth::user()->role == 'guru') 
                         <button type="submit" class="btn btn-primary">Yakin</button>
@@ -108,7 +129,7 @@
     </div>
 </div>
 @endforeach
-
+@endif
 
 
 @endsection

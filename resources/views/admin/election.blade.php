@@ -6,7 +6,7 @@
 <div class="container-fluid">
 <h1 class="h3 text-gray-800">Tabel Election</h1>
 <p>Ini merupakan tabel dari beberapa Election</p>
-<p style="color: red;">*Hanya ada 1 election yang aktif. Jika ada dua atau lebih election yang aktif, maka election dengan status aktif pertama yang akan dipilih</p>
+<p style="color: red;">*Hanya ada 1 election yang aktif per gender!</p>
 
 <!-- DataTales Example -->
 <div class="card shadow mb-4">
@@ -26,6 +26,7 @@
                     <tr align="center">
                         <th>Nama</th>
                         <th>Deskripsi</th>
+                        <th>Gender</th>
                         <th>Tanggal Dimulai</th>
                         <th>Tanggal Berakhir</th>
                         <th>Status</th>
@@ -37,6 +38,7 @@
                     <tr>
                         <td data-title="name">{{ $election->name }}</td>
                         <td data-title="description">{{ $election->description }}</td>
+                        <td data-title="gender">{{ $election->gender }}</td>
                         <td data-title="start_date">{{ \Carbon\Carbon::parse($election->start_date)->format('Y-m-d') }}</td>
                         <td data-title="end_date">{{ \Carbon\Carbon::parse($election->end_date)->format('Y-m-d') }}</td>
                         <td data-title="status">{{ $election->status }}</td>

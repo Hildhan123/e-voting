@@ -58,7 +58,7 @@
                         </div>
                         <div class="form-group">
                             <label>Visi Misi</label>
-                            <textarea name="visi_misi" class="form-control @error('visi_misi') is-invalid @enderror" placeholder="Visi-Misi">{{ old('visi_misi', $candidate->visi_misi) }}</textarea>
+                            <textarea name="visi_misi" class="form-control @error('visi_misi') is-invalid @enderror" placeholder="Visi-Misi" rows="5" cols="50">{{ old('visi_misi', $candidate->visi_misi) }}</textarea>
                             @error('visi_misi')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
