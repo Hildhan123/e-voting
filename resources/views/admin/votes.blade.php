@@ -34,7 +34,7 @@
                             <div class="col-md-3 mb-4" style="flex: 1 1 80%; margin: 25px 15px;">
                                 <div class="card" style="{{ $candidate->gender == 'perempuan' ? 'background-color: pink;' : 'background-color: blue; color: white' }}">
                                 <p class="card-text text-center" style="margin-top: 10px; margin-bottom: 10px">{{ $candidate->name }}</p>
-                                        <img src="{{ asset($candidate->photo) }}" class="card-img-top" alt="{{ $candidate->name }}" style= "background-color: gray" >
+                                        <img src="{{ asset($candidate->photo) }}" class="card-img-top" alt="{{ $candidate->name }}" style= "background-color: white" >
                                         <div class="card-body" style="background-color: white; color: black">
                                             <h5 class="card-title text-center"> Votes : {{ $candidate->votes_count }} ({{ $candidate->vote_percentage }}%)</h5>
                                         </div>
