@@ -22,7 +22,7 @@
 
 </head>
 
-<body class="bg-gradient-primary">
+<body class="bg-gradient-secondary">
 
     <div class="container">
 
@@ -36,7 +36,7 @@
                         <!-- Nested Row within Card Body -->
                         <div class="row">
                             <div class="col-lg-6 d-flex justify-content-center align-items-center p-5">
-                                <img src="{{asset('template/img/logo_tutwuri.png')}}" style="max-width: 85%; height: auto;">
+                                <img src="{{asset('template/img/logo.png')}}" style="max-width: 95%; height: auto;">
                             </div>
                             <div class="col-lg-6">
                                 <div class="p-5">

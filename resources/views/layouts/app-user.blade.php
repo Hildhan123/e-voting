@@ -13,6 +13,9 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    <!-- Icon Title -->
+    <link rel="icon" href="{{asset('template/img/logo.png')}}">
+
     <title>@yield('title')</title>
 
     <!-- Scripts -->
@@ -49,13 +52,13 @@
     <div id="wrapper">
 
         <!-- Sidebar -->
-        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+        <ul class="navbar-nav bg-gradient-secondary sidebar sidebar-dark accordion" id="accordionSidebar">
         <br><br>
 
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center">
                 <div class="sidebar-brand-icon">
-                    <img src="{{asset('template/img/logo_tutwuri.png')}}" style="width: 20vw; max-width: 80px;" alt="">
+                    <img src="{{asset('template/img/logo.png')}}" style="width: 20vw; max-width: 80px;" alt="">
                 </div>
             </a>
             <br>

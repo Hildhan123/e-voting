@@ -33,7 +33,7 @@
                         </div>
                         <div class="form-group">
                             <label>Gender</label>
-                            <select name="gender" class="form-control @error('gender') is-invalid @enderror">
+                            <select name="gender" class="form-select @error('gender') is-invalid @enderror">
                                 <option value="laki_laki" {{ old('gender') == 'laki_laki' ? 'selected' : '' }}>Laki-laki</option>
                                 <option value="perempuan" {{ old('gender') == 'perempuan' ? 'selected' : '' }}>Perempuan</option>
                             </select>
