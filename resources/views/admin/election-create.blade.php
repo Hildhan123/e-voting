@@ -32,6 +32,16 @@
                             @enderror
                         </div>
                         <div class="form-group">
+                            <label>Gender</label>
+                            <select name="gender" class="form-select @error('gender') is-invalid @enderror">
+                                <option value="laki_laki" {{ old('gender') == 'laki_laki' ? 'selected' : '' }}>Laki-laki</option>
+                                <option value="perempuan" {{ old('gender') == 'perempuan' ? 'selected' : '' }}>Perempuan</option>
+                            </select>
+                            @error('gender')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="form-group">
                             <label>Start Date</label>
                             <input type="date" name="start_date" value="{{ old('start_date') }}" class="form-control @error('start_date') is-invalid @enderror">
                             @error('start_date')

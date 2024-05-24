@@ -5,6 +5,28 @@
 @section('content')
 
 <div class="container-fluid">
+    @if(Auth::user()->role == 'guru')
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <div class="card-body">
+                        <h1 class="h3 mb-2 text-gray-800" style="margin-bottom: 50px; font-size: 100%; font-weight: bold;">Pilih Election</h1>
+                            <form method="POST" action="{{route('voteGuru')}}">
+                                @csrf
+                                @method('PUT')
+                                <div class="form-group">
+                                    <select name="election_id" class="form-select">
+                                        @foreach ($elections as $list)
+                                        <option value="{{ $list->id }}" {{ old('election_id') == $list->id ? 'selected' : '' }}>{{ $list->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>       
+                                <button type="submit" class="btn btn-primary mt-3 float-right" style="width: 100%; max-width: 200px;"><i class="fas fa-paper-plane"> &nbsp</i>Submit</button>
+                            </form>
+                    </div>
+                </div>
+            </div>
+    @endif
+    @if(Auth::user()->role == 'siswa' || $guru == 'ok')
     <div class="card shadow mb-4">
         <div class="card-header py-3">
         <h3 style="text-align: center;" ><strong>{{ $election->name }}</strong></h3>
@@ -15,8 +37,6 @@
         <hr class="divider" style="border-top: 2px solid black;">
         @if (!$vote)
         <p style="text-align: center;">Tentukan pilihan anda sekarang. Karena pilihan anda sangat berharga untuk kami, Terimakasih <i class="far fa-smile-wink"></i></p>
-        
-
             <div class="row justify-content-center" style="display: flex; flex-wrap: wrap;" >
             @foreach ($candidates as $candidate)
             <div class="col-md-3 mb-4" style="flex: 1 1 80%; margin: 25px 15px;">
@@ -34,7 +54,6 @@
 
             @else
                 <p style="text-align: center;">Terimakasih atas pilihan anda &nbsp; <img src="{{{ asset('template/img/ilustration-thankyou.png') }}}" alt="" style="width: 15vw; max-width: 50px;"></p>
-                
                 <div class="row justify-content-center" style="display: flex; flex-wrap: wrap;" >
                 @foreach ($candidates as $candidate)
                     <div class="col-md-3 mb-4" style="flex: 1 1 80%; margin: 25px 15px;">
@@ -56,7 +75,7 @@
                                     </div>
                                 </div>
                             @endif
-                            <div class="card-body" style="{{ $vote && $vote->candidate_id == $candidate->id ? 'background-color: blue; color: white;' : (($candidate->gender == 'perempuan' && Auth::user()->gender == 'perempuan') ? 'background-color: pink; color: black;' : (($candidate->gender == 'laki-laki' && Auth::user()->gender == 'laki-laki') ? 'background-color: blue; color: white;' : 'background-color: grey; color: #e2e8f0;')) }}">
+                            <div class="card-body" style="{{ ($vote && $vote->candidate_id == $candidate->id) ? (($candidate->gender == 'perempuan') ? 'background-color: pink; color: black;' : 'background-color: blue; color: white;') : (($candidate->gender == 'perempuan') ? 'background-color: pink; color: black;' : 'background-color: blue; color: white;') }}">
                                 <h5 class="card-title text-center">{{ $candidate->name }}</h5>
                             </div>
                         </div>
@@ -66,8 +85,10 @@
             @endif
         </div>
     </div>
+    @endif
 </div>
 
+@if($candidates)
 @foreach ($candidates as $candidate)
 <!-- Modal -->
 <div class="modal fade" id="candidateModal{{$candidate->id}}" tabindex="-1" role="dialog" aria-labelledby="candidateModalLabel{{$candidate->id}}" aria-hidden="true">
@@ -87,7 +108,7 @@
                         <h4 class="modal-title text-center" id="candidateModalLabel{{$candidate->id}}" style="color: black;"><strong>{{ $candidate->name }}</strong></h4>
                         <hr class="divider" style="border-top: 1px solid black;">
                         <h5 style="text-align: center; color: black;"><strong>Visi & Misi:</strong></h5>
-                        <small style="display: block; text-align: center; color: black;">{{ $candidate->visi_misi }}</small>
+                        <small style="display: block; text-align: center; color: black; overflow: hidden; white-space: pre-wrap;">{{ $candidate->visi_misi }}</small>
                     </div>
                 </div>
             </div>
@@ -95,6 +116,7 @@
                 <form action="{{ route('voteHandler') }}" method="POST">
                     @csrf
                     <input type="hidden" name="vote" value="{{ $candidate->id }}">
+                    <input type="hidden" name="election_id" value="{{ $election->id }}">
                     <small>Apakah anda yakin dengan pilihan anda?</small>
                     @if (Auth::user()->gender == $candidate->gender || Auth::user()->role == 'guru') 
                         <button type="submit" class="btn btn-primary">Yakin</button>
@@ -108,7 +130,7 @@
     </div>
 </div>
 @endforeach
-
+@endif
 
 
 @endsection

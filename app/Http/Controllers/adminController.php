@@ -104,11 +104,21 @@ class adminController extends Controller
         $validateData = $request->validate([
             'name' => 'required|string',
             'description' => 'required|string',
+            'gender' => 'required|in:laki_laki,perempuan',
             'start_date' => 'required|date',
             'end_date' => 'required|date',
             'status' => 'required|in:aktif,selesai,ditutup',
         ]);
 
+        if($validateData['status'] == 'aktif') {
+            $election = Election::where([
+                'status' => 'aktif',
+                'gender' => $validateData['gender']
+            ])->first();
+            if($election) {
+                return redirect()->back()->withErrors(['status' => 'Hanya ada 1 election yang aktif per gender'])->withInput();
+            }
+        }
         $election = Election::create($validateData);
         return redirect()->route('adminElection')->with('success', 'Data Election berhasil dibuat');
     }
@@ -122,14 +132,28 @@ class adminController extends Controller
         $validateData = $request->validate([
             'name' => 'required|string',
             'description' => 'required|string',
+            'gender' => 'required|in:laki_laki,perempuan',
             'start_date' => 'required|date',
             'end_date' => 'required|date',
             'status' => 'required|in:aktif,selesai,ditutup',
         ]);
+
+        $election = Election::findOrFail($id);
+
+        if($validateData['status'] == 'aktif' && $election->status != 'aktif') {
+            $election = Election::where([
+                'status' => 'aktif',
+                'gender' => $validateData['gender']
+            ])->first();
+            if($election) {
+                return redirect()->back()->withErrors(['status' => 'Hanya ada 1 election yang aktif per gender'])->withInput();
+            }
+        }
         
         $election = Election::findOrFail($id);
         $election->name = $request->name;
         $election->description = $request->description;
+        $election->gender = $request->gender;
         $election->start_date = $request->start_date;
         $election->end_date = $request->end_date;
         $election->status = $request->status;
